@@ -10,7 +10,7 @@
 int main(int argc, char **argv) {
   std::string imgFileName;
   std::string outFileName;
-  int nColorVectors = 64;
+  int nColorVectors = 8;
 
   if (argc < 3) {
     fmt::print("Please specify input and output filename(or path)\n");
