@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "XMAKE",
+            "command": "xmake -w && xmake project -k compile_commands",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent",
+                "close": true
+            }
+        }
+    ]
+}
