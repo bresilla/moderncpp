@@ -13,15 +13,15 @@ add_requires("DIP", {system = true})
 add_requires("libtorch")
 add_requires("open3d")
 
+target("main")
+    set_kind("binary")
+    add_files("src/main.cpp")
+    add_packages("fmt")
+
 target("resume")
     set_kind("binary")
     add_files("src/resume.cpp")
     add_packages("opencv", "fmt")
-
-target("dipper")
-    set_kind("binary")
-    add_files("src/dipper.cpp")
-    add_packages("fmt", "DIP")
 
 target("classify")
     set_kind("binary")

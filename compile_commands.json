@@ -1,16 +1,16 @@
 [
 {
-  "directory": "/doc/work/WUR/data/APPLEMATURITY/maturity",
+  "directory": "/doc/code/train/moderncpp",
   "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O3", "-std=c++20", "-I", "/usr/include/opencv4", "-I", "/home/bresilla/.config/.xmake/packages/l/libtorch/v1.12.1/83e7659fd171481aa687b7b8e2b9e5ea/include", "-I", "/home/bresilla/.config/.xmake/packages/l/libtorch/v1.12.1/83e7659fd171481aa687b7b8e2b9e5ea/include/torch/csrc/api/include", "-I", "/home/bresilla/.config/.xmake/packages/o/openblas/0.3.21/811c62adbd54418cb6c78d3b43ac74ff/include", "-fopenmp", "-fno-strict-aliasing", "-DDEBUG", "-o", "build/.objs/classify/linux/x86_64/debug/src/classify.cpp.o", "src/classify.cpp"],
   "file": "src/classify.cpp"
 },
 {
-  "directory": "/doc/work/WUR/data/APPLEMATURITY/maturity",
+  "directory": "/doc/code/train/moderncpp",
   "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O3", "-std=c++20", "-I", "/usr/include/opencv4", "-fno-strict-aliasing", "-DDEBUG", "-o", "build/.objs/resume/linux/x86_64/debug/src/resume.cpp.o", "src/resume.cpp"],
   "file": "src/resume.cpp"
 },
 {
-  "directory": "/doc/work/WUR/data/APPLEMATURITY/maturity",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O3", "-std=c++20", "-fno-strict-aliasing", "-DDEBUG", "-o", "build/.objs/dipper/linux/x86_64/debug/src/dipper.cpp.o", "src/dipper.cpp"],
-  "file": "src/dipper.cpp"
+  "directory": "/doc/code/train/moderncpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O3", "-std=c++20", "-fno-strict-aliasing", "-DDEBUG", "-o", "build/.objs/main/linux/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
+  "file": "src/main.cpp"
 }]
