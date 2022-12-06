@@ -1,0 +1,8 @@
+#!/bin/zsh
+run () 
+{ 
+    xmake;
+    echo "";
+    xmake run main
+}
+run $*

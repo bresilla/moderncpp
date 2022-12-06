@@ -2,14 +2,14 @@
 
 #include <chrono>
 #include <iostream>
+#include <map>
 #include <opencv2/opencv.hpp>
 #include <random>
 #include <vector>
 
 class Pixel {
- public:
-  uchar b, g, r;  // 8 bit, 0-255
-
+public:
+  uchar b, g, r; // 8 bit, 0-255
   Pixel(uchar b, uchar g, uchar r) {
     this->b = b;
     this->g = g;
@@ -17,13 +17,26 @@ class Pixel {
   }
 };
 
+template <> struct fmt::formatter<Pixel> {
+  formatter<int> int_formatter;
+  template <typename ParseContext> constexpr auto parse(ParseContext &ctx) {
+    return ctx.begin();
+  }
+  template <typename FormatContext>
+  auto format(const Pixel &pixel, FormatContext &ctx) {
+    return format_to(ctx.out(), "rgb({},{},{})", pixel.r, pixel.g, pixel.b);
+  }
+};
+
 class KMeans {
- private:
+private:
   std::vector<Pixel> clusterCentres;
+  std::vector<int> clusterCentres_int;
+  std::map<Pixel, int> clusterCount;
   cv::Mat image;
   int K;
 
- public:
+public:
   cv::Mat labels;
   // Intialise cluster centres as random pixels from the image
   KMeans(cv::Mat image, int K) {
@@ -42,11 +55,11 @@ class KMeans {
     assignNewClusterCentres();
   }
   void train(int iterations) {
-    fmt::print("Training...\n");
+    // fmt::print("Training...\n");
     for (int i = 0; i < iterations; i++) {
       computeCentroids();
       assignNewClusterCentres();
-      fmt::print("Training step {} done\n", i);
+      // fmt::print("Training step {} done\n", i);
     }
   }
 
@@ -55,12 +68,29 @@ class KMeans {
       for (int c = 0; c < image.cols; c++) {
         Pixel p = clusterCentres.at(labels.at<uchar>(r, c));
         cv::Vec3b bgr_pixel(p.b, p.g, p.r);
+        // cv::Vec3b curr_pix = image.at<cv::Vec3b>(r, c);
         image.at<cv::Vec3b>(r, c) = bgr_pixel;
+        auto curr_pix = Pixel(bgr_pixel[0], bgr_pixel[1], bgr_pixel[2]);
+        for (int i = 0; i < clusterCentres.size(); i++) {
+          fmt::print("KEY");
+          fmt::print("KEY");
+          // if(clusterCount.find(curr_pix) != clusterCount.end()){
+          //   fmt::print("KEY EXISTS");
+          // } else {
+          //   fmt::print("KEY DOES NOT EXISTS");
+          // }
+        }
+        fmt::print("{}", bgr_pixel[0]);
       }
     }
   }
+  void get_colors() {
+    for (Pixel p : clusterCentres) {
+      fmt::print("{}\n", p);
+    }
+  }
 
- private:
+private:
   void assignNewClusterCentres() {
     for (int r = 0; r < image.rows; r++) {
       for (int c = 0; c < image.cols; c++) {
@@ -86,7 +116,7 @@ class KMeans {
     }
   }
 
- private:
+private:
   void computeCentroids() {
     for (int i = 0; i < K; i++) {
       double mean_b = 0.0, mean_g = 0.0, mean_r = 0.0;
@@ -109,18 +139,18 @@ class KMeans {
     }
   }
 
-  static double euclideanDistance(int x1, int y1, int c1, int x2, int y2, int c2) {
+  static double euclideanDistance(int x1, int y1, int c1, int x2, int y2,
+                                  int c2) {
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(c1 - c2, 2));
   }
 
   static int random(int lim) {
     std::default_random_engine dre(std::chrono::steady_clock::now()
                                        .time_since_epoch()
-                                       .count());  // provide seed
+                                       .count()); // provide seed
     std::uniform_int_distribution<int> uid{
-        0, lim};  // help dre to generate nos from 0 to lim (lim included);
-    return uid(
-        dre);  // pass dre as an argument to uid to generate the random no
+        0, lim};     // help dre to generate nos from 0 to lim (lim included);
+    return uid(dre); // pass dre as an argument to uid to generate the random no
   }
 };
 
@@ -134,18 +164,21 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  if (argc == 4) nColorVectors = std::stoi(argv[3]);
+  if (argc == 4)
+    nColorVectors = std::stoi(argv[3]);
 
   imgFileName = argv[1];
   outFileName = argv[2];
   cv::Mat image;
   image = cv::imread(imgFileName);
 
-  if (image.empty()) return -1;
+  if (image.empty())
+    return -1;
 
   KMeans kmeans(image, nColorVectors);
   kmeans.train(10);
   kmeans.convert();
+  kmeans.get_colors();
   cv::imwrite(outFileName, image);
 
   return 0;
